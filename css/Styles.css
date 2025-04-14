@@ -1,0 +1,578 @@
+:root {
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --light-color: #ecf0f1;
+    --dark-color: #2c3e50;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    color: #333;
+}
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Barra de navegación */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+
+.logo img {
+    height: 40px;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: white;
+}
+
+/* Contenido principal */
+.main-content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: white;
+    padding: 20px 0;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.menu {
+    list-style: none;
+}
+
+.menu li {
+    padding: 14px 25px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.menu li:hover {
+    background-color: #f8f9fa;
+}
+
+.menu li.active {
+    background-color: #e3f2fd;
+    color: var(--primary-color);
+    border-left: 4px solid var(--secondary-color);
+    font-weight: 500;
+}
+
+.menu li i {
+    width: 24px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+/* Área de contenido */
+.content-area {
+    flex: 1;
+    padding: 25px;
+    overflow-y: auto;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 25px;
+}
+
+/* Sección izquierda - Tarjetas y acciones */
+.left-section {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+/* Tarjeta de saldo */
+.balance-card {
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+    color: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.balance-card h3 {
+    font-size: 1rem;
+    font-weight: normal;
+    margin-bottom: 10px;
+    opacity: 0.9;
+}
+
+.amount {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.account-number {
+    font-size: 0.95rem;
+    opacity: 0.9;
+}
+
+/* Acciones rápidas */
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.action-btn {
+    padding: 16px 10px;
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+    color: var(--dark-color);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn i {
+    font-size: 1.4rem;
+    color: var(--secondary-color);
+}
+
+/* Tarjetas de productos */
+.products-section {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--dark-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-title a {
+    font-size: 0.9rem;
+    font-weight: normal;
+    color: var(--secondary-color);
+    text-decoration: none;
+}
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.product-card {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.product-card:hover {
+    background-color: #e9ecef;
+}
+
+.product-icon {
+    width: 40px;
+    height: 40px;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.product-name {
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Últimas transacciones */
+.transactions-section {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.transaction-item {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.transaction-item:last-child {
+    border-bottom: none;
+}
+
+.transaction-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #e3f2fd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    color: var(--secondary-color);
+}
+
+.transaction-details {
+    flex: 1;
+}
+
+.transaction-title {
+    font-weight: 500;
+    margin-bottom: 3px;
+}
+
+.transaction-date {
+    font-size: 0.8rem;
+    color: #777;
+}
+
+.transaction-amount {
+    font-weight: 600;
+}
+
+.transaction-amount.positive {
+    color: #2ecc71;
+}
+
+.transaction-amount.negative {
+    color: var(--accent-color);
+}
+
+/* Widget del Chatbot - Versión extendida */
+.chatbot-widget {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 120px);
+}
+
+.chatbot-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 20px;
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.chatbot-header h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.2rem;
+}
+
+.minimize-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.chatbot-messages {
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.bot-message, .user-message {
+    max-width: 80%;
+    padding: 14px 18px;
+    border-radius: 18px;
+    position: relative;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.bot-message {
+    align-self: flex-start;
+    background-color: #f0f0f0;
+    border-bottom-left-radius: 5px;
+}
+
+.user-message {
+    align-self: flex-end;
+    background-color: var(--secondary-color);
+    color: white;
+    border-bottom-right-radius: 5px;
+}
+
+.message-time {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    text-align: right;
+    margin-top: 5px;
+}
+
+.chatbot-input {
+    display: flex;
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+    background-color: #f9f9f9;
+}
+
+.chatbot-input input {
+    flex: 1;
+    padding: 14px 18px;
+    border: 1px solid #ddd;
+    border-radius: 24px;
+    outline: none;
+    font-size: 1rem;
+}
+
+.chatbot-input button {
+    background: none;
+    border: none;
+    color: var(--secondary-color);
+    font-size: 1.3rem;
+    cursor: pointer;
+    margin-left: 12px;
+    transition: transform 0.2s;
+}
+
+.chatbot-input button:hover {
+    transform: scale(1.1);
+}
+
+.quick-questions {
+    display: flex;
+    gap: 10px;
+    padding: 0 20px 20px;
+    flex-wrap: wrap;
+}
+
+.quick-question {
+    padding: 10px 14px;
+    background-color: #e3f2fd;
+    border: none;
+    border-radius: 18px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.quick-question:hover {
+    background-color: #bbdefb;
+    transform: translateY(-2px);
+}
+
+/* Sistema de calificación */
+.rating-container {
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-top: 1px solid #eee;
+    text-align: center;
+}
+
+.rating-stars {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 8px;
+}
+
+.rating-stars i {
+    font-size: 1.8rem;
+    color: #ddd;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.rating-stars i:hover,
+.rating-stars i.active {
+    color: #f39c12;
+    transform: scale(1.1);
+}
+
+.rating-text {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+/* Efecto de confirmación de calificación */
+.rating-confirmation {
+    padding: 15px;
+    text-align: center;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border-radius: 8px;
+    margin: 10px 20px;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Efectos para mensajes nuevos */
+@keyframes messageAppear {
+    from {
+        opacity: 0;
+        transform: translateY(5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.bot-message, .user-message {
+    animation: messageAppear 0.2s ease-out;
+}
+
+/* Scrollbar personalizada */
+.chatbot-messages::-webkit-scrollbar {
+    width: 8px;
+}
+
+.chatbot-messages::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+}
+
+.chatbot-messages::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .content-area {
+        grid-template-columns: 1fr 1.2fr;
+    }
+}
+
+@media (max-width: 992px) {
+    .content-area {
+        grid-template-columns: 1fr;
+    }
+    
+    .chatbot-widget {
+        height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+    }
+    
+    .menu li span {
+        display: none;
+    }
+    
+    .menu li {
+        justify-content: center;
+        padding: 14px 0;
+    }
+    
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .content-area {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 576px) {
+    .products-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .quick-questions {
+        justify-content: center;
+    }
+    
+    .chatbot-input {
+        padding: 12px 15px;
+    }
+    
+    .chatbot-input input {
+        padding: 12px 15px;
+    }
+}

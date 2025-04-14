@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="css/Styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Barra de navegación -->
+        <nav class="navbar">
+            <div class="logo">
+                <img src="logo-banco.png" alt="Finia" class="logo-img">
+                <span>Finia</span>
+            </div>
+            <div class="user-menu">
+                <span class="username">Juan Pérez</span>
+                <div class="avatar">JP</div>
+            </div>
+        </nav>
+
+        <!-- Contenido principal -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <ul class="menu">
+                    <li class="active"><i class="fas fa-home"></i> <span>Inicio</span></li>
+                    <li><i class="fas fa-wallet"></i> <span>Cuentas</span></li>
+                    <li><i class="fas fa-exchange-alt"></i> <span>Transferencias</span></li>
+                    <li><i class="fas fa-credit-card"></i> <span>Tarjetas</span></li>
+                    <li><i class="fas fa-piggy-bank"></i> <span>Ahorros</span></li>
+                    <li><i class="fas fa-bell"></i> <span>Notificaciones</span></li>
+                    <li><i class="fas fa-cog"></i> <span>Configuración</span></li>
+                </ul>
+            </aside>
+
+            <!-- Área de contenido -->
+            <div class="content-area">
+                <!-- Sección izquierda -->
+                <div class="left-section">
+                    <!-- Tarjeta de saldo -->
+                    <div class="balance-card">
+                        <h3>Saldo disponible</h3>
+                        <div class="amount">$12,450.50</div>
+                        <div class="account-number">Cuenta: ****3456</div>
+                    </div>
+
+                    <!-- Acciones rápidas -->
+                    <div class="quick-actions">
+                        <button class="action-btn">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Transferir</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-money-bill-wave"></i>
+                            <span>Pagar</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-qrcode"></i>
+                            <span>QR</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-plus"></i>
+                            <span>Más</span>
+                        </button>
+                    </div>
+
+                    <!-- Sección de productos -->
+                    <div class="products-section">
+                        <h3 class="section-title">Mis productos <a href="#">Ver todos</a></h3>
+                        <div class="products-grid">
+                            <div class="product-card">
+                                <div class="product-icon">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <span class="product-name">Tarjeta Débito</span>
+                            </div>
+                            <div class="product-card">
+                                <div class="product-icon">
+                                    <i class="fas fa-credit-card"></i>
+                                </div>
+                                <span class="product-name">Tarjeta Crédito</span>
+                            </div>
+                            <div class="product-card">
+                                <div class="product-icon">
+                                    <i class="fas fa-piggy-bank"></i>
+                                </div>
+                                <span class="product-name">Ahorros</span>
+                            </div>
+                            <div class="product-card">
+                                <div class="product-icon">
+                                    <i class="fas fa-file-invoice-dollar"></i>
+                                </div>
+                                <span class="product-name">Préstamos</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Últimas transacciones -->
+                    <div class="transactions-section">
+                        <h3 class="section-title">Últimas transacciones <a href="#">Ver todas</a></h3>
+                        <div class="transactions-list">
+                            <div class="transaction-item">
+                                <div class="transaction-icon">
+                                    <i class="fas fa-shopping-bag"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <div class="transaction-title">Compra en Amazon</div>
+                                    <div class="transaction-date">Hoy, 10:45 AM</div>
+                                </div>
+                                <div class="transaction-amount negative">-$45.99</div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-icon">
+                                    <i class="fas fa-exchange-alt"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <div class="transaction-title">Transferencia recibida</div>
+                                    <div class="transaction-date">Ayer, 3:20 PM</div>
+                                </div>
+                                <div class="transaction-amount positive">+$200.00</div>
+                            </div>
+                            <div class="transaction-item">
+                                <div class="transaction-icon">
+                                    <i class="fas fa-coffee"></i>
+                                </div>
+                                <div class="transaction-details">
+                                    <div class="transaction-title">Cafetería Central</div>
+                                    <div class="transaction-date">Ayer, 9:15 AM</div>
+                                </div>
+                                <div class="transaction-amount negative">-$3.50</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chatbot extendido -->
+                <div class="chatbot-widget">
+                    <div class="chatbot-header">
+                        <h3><i class="fas fa-robot"></i> Asistente Virtual</h3>
+                        <button class="minimize-btn"><i class="fas fa-minus"></i></button>
+                    </div>
+                    <div class="chatbot-messages" id="chatbot-messages">
+                        <!-- Área de mensajes vacía, se llenará dinámicamente -->
+                        <div class="rating-container" id="rating-container" style="display: none;">
+                            <div class="rating-stars">
+                                <i class="fas fa-star" data-rating="1"></i>
+                                <i class="fas fa-star" data-rating="2"></i>
+                                <i class="fas fa-star" data-rating="3"></i>
+                                <i class="fas fa-star" data-rating="4"></i>
+                                <i class="fas fa-star" data-rating="5"></i>
+                            </div>
+                            <div class="rating-text">Califica nuestra atención</div>
+                        </div>
+                    </div>
+                    <div class="chatbot-input">
+                        <input type="text" id="user-input" placeholder="Escribe tu pregunta...">
+                        <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+                        <button id="mic-btn"><i class="fas fa-microphone"></i></button>
+                    </div>
+                    <div class="quick-questions">
+                        <button class="quick-question" data-question="¿Cómo hacer una transferencia?">Transferencias</button>
+                        <button class="quick-question" data-question="¿Cuál es mi saldo?">Consultar saldo</button>
+                        <button class="quick-question" data-question="¿Cómo bloquear mi tarjeta?">Bloquear tarjeta</button>
+                        <button class="quick-question" data-question="¿Dónde están mis tarjetas?">Mis tarjetas</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/Script.js"></script>
+</body>
+</html>
