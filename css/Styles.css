@@ -318,7 +318,7 @@ body {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 120px);
+    height: calc(100vh - 140px);
 }
 
 .chatbot-header {
