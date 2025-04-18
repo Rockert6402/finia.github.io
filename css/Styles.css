@@ -13,15 +13,21 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+html {
+    font-size: 16px;
+}
+
 body {
     background-color: #f5f7fa;
     color: #333;
+    line-height: 1.6;
 }
 
 .app-container {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    overflow: hidden;
 }
 
 /* Barra de navegación */
@@ -33,6 +39,8 @@ body {
     background-color: var(--primary-color);
     color: white;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 100;
 }
 
 .logo {
@@ -51,6 +59,10 @@ body {
     display: flex;
     align-items: center;
     gap: 15px;
+}
+
+.username {
+    font-size: 0.95rem;
 }
 
 .avatar {
@@ -78,6 +90,8 @@ body {
     background-color: white;
     padding: 20px 0;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    overflow-y: auto;
 }
 
 .menu {
@@ -91,6 +105,7 @@ body {
     gap: 15px;
     cursor: pointer;
     transition: all 0.2s;
+    font-size: 0.95rem;
 }
 
 .menu li:hover {
@@ -108,6 +123,7 @@ body {
     width: 24px;
     text-align: center;
     font-size: 1.1rem;
+    color: var(--dark-color);
 }
 
 /* Área de contenido */
@@ -118,6 +134,7 @@ body {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
     gap: 25px;
+    background-color: #f5f7fa;
 }
 
 /* Sección izquierda - Tarjetas y acciones */
@@ -176,6 +193,7 @@ body {
     justify-content: center;
     gap: 8px;
     transition: all 0.2s;
+    font-size: 0.85rem;
 }
 
 .action-btn:hover {
@@ -261,6 +279,11 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
+.transactions-list {
+    display: flex;
+    flex-direction: column;
+}
+
 .transaction-item {
     display: flex;
     align-items: center;
@@ -319,6 +342,7 @@ body {
     display: flex;
     flex-direction: column;
     height: calc(100vh - 140px);
+    transition: all 0.3s ease;
 }
 
 .chatbot-header {
@@ -343,6 +367,7 @@ body {
     color: white;
     cursor: pointer;
     font-size: 1.1rem;
+    padding: 5px;
 }
 
 .chatbot-messages {
@@ -361,6 +386,7 @@ body {
     position: relative;
     font-size: 1rem;
     line-height: 1.5;
+    animation: messageAppear 0.2s ease-out;
 }
 
 .bot-message {
@@ -407,6 +433,7 @@ body {
     cursor: pointer;
     margin-left: 12px;
     transition: transform 0.2s;
+    padding: 5px;
 }
 
 .chatbot-input button:hover {
@@ -428,6 +455,7 @@ body {
     font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.2s;
+    white-space: nowrap;
 }
 
 .quick-question:hover {
@@ -479,12 +507,33 @@ body {
     animation: fadeIn 0.3s ease-out;
 }
 
+/* Botón flotante del chatbot (solo móvil) */
+.chatbot-float-btn {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: var(--secondary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 1000;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+/* Animaciones */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Efectos para mensajes nuevos */
 @keyframes messageAppear {
     from {
         opacity: 0;
@@ -494,10 +543,6 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-.bot-message, .user-message {
-    animation: messageAppear 0.2s ease-out;
 }
 
 /* Scrollbar personalizada */
@@ -519,7 +564,7 @@ body {
     background: #a8a8a8;
 }
 
-/* Responsive */
+/* Media Queries para móviles */
 @media (max-width: 1200px) {
     .content-area {
         grid-template-columns: 1fr 1.2fr;
@@ -537,42 +582,189 @@ body {
 }
 
 @media (max-width: 768px) {
-    .sidebar {
-        width: 70px;
+    html {
+        font-size: 18px;
     }
     
-    .menu li span {
-        display: none;
+    /* Layout simplificado */
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        padding: 10px 0;
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        position: sticky;
+        top: 0;
+        z-index: 90;
+    }
+    
+    .menu {
+        display: flex;
+        padding: 0 10px;
     }
     
     .menu li {
-        justify-content: center;
-        padding: 14px 0;
+        padding: 10px 15px;
+        flex-direction: column;
+        gap: 5px;
+        border-left: none;
+        border-bottom: 3px solid transparent;
+        min-width: 80px;
     }
     
-    .quick-actions {
-        grid-template-columns: repeat(2, 1fr);
+    .menu li.active {
+        border-left: none;
+        border-bottom: 3px solid var(--secondary-color);
+        background-color: transparent;
     }
     
+    .menu li i {
+        font-size: 1.2rem;
+    }
+    
+    .menu li span {
+        display: block;
+        font-size: 0.7rem;
+    }
+    
+    /* Contenido principal */
     .content-area {
         padding: 15px;
+        grid-template-columns: 1fr;
+        gap: 15px;
     }
-}
-
-@media (max-width: 576px) {
+    
+    /* Balance card más grande */
+    .balance-card {
+        padding: 20px;
+    }
+    
+    .amount {
+        font-size: 2.5rem;
+    }
+    
+    /* Botones más grandes */
+    .action-btn {
+        padding: 20px 10px;
+        font-size: 0.9rem;
+    }
+    
+    .action-btn i {
+        font-size: 1.8rem;
+    }
+    
+    /* Transacciones más legibles */
+    .transaction-item {
+        padding: 15px 0;
+    }
+    
+    .transaction-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+    }
+    
+    /* Chatbot optimizado */
+    .chatbot-widget {
+        height: 60vh;
+        margin-top: 20px;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: calc(100% - 40px);
+        height: 60vh;
+        display: none;
+        z-index: 1000;
+    }
+    
+    .chatbot-widget.active {
+        display: flex;
+    }
+    
+    .bot-message, .user-message {
+        max-width: 90%;
+        padding: 16px 20px;
+        font-size: 1.1rem;
+    }
+    
+    .chatbot-input input {
+        padding: 16px 20px;
+        font-size: 1.1rem;
+    }
+    
+    /* Quick actions en 2 columnas */
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    /* Productos en una sola columna */
     .products-grid {
         grid-template-columns: 1fr;
     }
     
-    .quick-questions {
-        justify-content: center;
+    /* Navbar más compacta */
+    .navbar {
+        padding: 10px 15px;
     }
     
-    .chatbot-input {
-        padding: 12px 15px;
+    .logo img {
+        height: 30px;
     }
     
+    .avatar {
+        width: 35px;
+        height: 35px;
+    }
+    
+    /* Botón flotante del chatbot */
+    .chatbot-float-btn {
+        display: flex;
+    }
+}
+
+@media (max-width: 480px) {
+    html {
+        font-size: 20px;
+    }
+    
+    /* Elementos aún más grandes */
+    .action-btn {
+        padding: 25px 10px;
+    }
+    
+    .balance-card {
+        padding: 25px;
+    }
+    
+    .amount {
+        font-size: 2.8rem;
+    }
+    
+    /* Menú más simple */
+    .menu li {
+        padding: 8px 12px;
+    }
+    
+    /* Input más grande */
     .chatbot-input input {
-        padding: 12px 15px;
+        padding: 18px 22px;
+    }
+    
+    /* Quick questions en columna */
+    .quick-questions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .quick-question {
+        width: 100%;
+        text-align: center;
+        padding: 12px;
     }
 }

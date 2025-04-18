@@ -6,10 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
         micBtn: document.getElementById('mic-btn'),
         chatMessages: document.getElementById('chatbot-messages'),
         quickQuestions: document.querySelectorAll('.quick-question'),
-        minimizeBtn: document.querySelector('.minimize-btn'),
-        chatbotWidget: document.querySelector('.chatbot-widget'),
-        chatbotInput: document.querySelector('.chatbot-input'),
-        quickQuestionsContainer: document.querySelector('.quick-questions')
+        minimizeBtn: document.getElementById('minimize-btn'),
+        chatbotWidget: document.getElementById('chatbot-widget'),
+        floatBtn: document.getElementById('chatbot-float-btn'),
+        ratingContainer: document.getElementById('rating-container'),
+        ratingStars: document.querySelectorAll('.rating-stars i')
     };
     
     // Estado del chatbot
@@ -17,6 +18,7 @@ document.addEventListener('DOMContentLoaded', function() {
         isMinimized: false,
         isListening: false,
         isRating: false,
+        isChatOpen: false,
         ratings: JSON.parse(localStorage.getItem('chatbotRatings')) || []
     };
     
@@ -688,29 +690,34 @@ Proceso tarda 5-10 días hábiles`,
         { keywords: ['adiós', 'adios', 'hasta luego', 'nos vemos', 'gracias'], response: 'farewell' }
     ];
     
-    // Función para agregar un mensaje al chat
+    // Función para agregar un mensaje al chat (optimizada para móvil)
     function addMessage(text, isUser = false) {
         const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+        messageDiv.className = isUser ? 'user-message' : 'bot-message';
         
-        const contentDiv = document.createElement('div');
-        contentDiv.className = 'message-content';
-        contentDiv.textContent = text;
-        contentDiv.innerHTML = contentDiv.innerHTML.replace(/\n/g, '<br>');
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        messageContent.innerHTML = text.replace(/\n/g, '<br>');
         
         const timeDiv = document.createElement('div');
         timeDiv.className = 'message-time';
         timeDiv.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         
-        messageDiv.append(contentDiv, timeDiv);
+        messageDiv.appendChild(messageContent);
+        messageDiv.appendChild(timeDiv);
         elements.chatMessages.appendChild(messageDiv);
         
+        // Scroll al final con comportamiento suave
         elements.chatMessages.scrollTo({
             top: elements.chatMessages.scrollHeight,
             behavior: 'smooth'
         });
+        
+        // En móviles, mantener el chat abierto al enviar mensajes
+        if (window.innerWidth <= 768 && !state.isChatOpen) {
+            toggleChat();
+        }
     }
-    
     // Función para guardar la calificación
     function saveRating(rating) {
         const ratingData = {
@@ -724,6 +731,42 @@ Proceso tarda 5-10 días hábiles`,
         
         console.log('Calificación guardada:', ratingData);
         console.log('Todas las calificaciones:', state.ratings);
+    }
+
+     // Función para mostrar el sistema de calificación (optimizada para móvil)
+     function showRating() {
+        elements.ratingContainer.style.display = 'block';
+        scrollToBottom();
+        
+        // Configurar estrellas de calificación
+        elements.ratingStars.forEach(star => {
+            star.addEventListener('click', function() {
+                const rating = this.getAttribute('data-rating');
+                elements.ratingStars.forEach((s, index) => {
+                    s.classList.toggle('active', index < rating);
+                });
+                
+                // Mostrar confirmación y cerrar después de 3 segundos
+                const confirmation = document.createElement('div');
+                confirmation.className = 'rating-confirmation';
+                confirmation.textContent = '¡Gracias por tu calificación!';
+                elements.ratingContainer.appendChild(confirmation);
+                
+                setTimeout(() => {
+                    confirmation.remove();
+                    elements.ratingContainer.style.display = 'none';
+                }, 3000);
+                
+                saveRating(rating);
+            });
+        });
+    }
+    
+    // Función para hacer scroll al final del chat
+    function scrollToBottom() {
+        setTimeout(() => {
+            elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
+        }, 100);
     }
     
     // Función para mostrar estadísticas de calificación
@@ -830,37 +873,48 @@ Proceso tarda 5-10 días hábiles`,
         return botResponses.default;
     }
     
-    // Función para manejar el envío de mensajes
-    function handleSendMessage() {
+ // Función para manejar el envío de mensajes (optimizada para móvil)
+ function handleSendMessage() {
         const message = elements.userInput.value.trim();
         if (!message) return;
         
         addMessage(message, true);
         elements.userInput.value = '';
         
-        // Mostrar "escribiendo..."
-        const typingIndicator = document.createElement('div');
-        typingIndicator.className = 'bot-message typing-indicator';
-        typingIndicator.textContent = 'Escribiendo...';
-        elements.chatMessages.appendChild(typingIndicator);
-        elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
-        
-        setTimeout(() => {
-            elements.chatMessages.removeChild(typingIndicator);
-            const response = getBotResponse(message);
-            if (response) {
-                addMessage(response);
-            }
-        }, 800 + Math.random() * 700);
+        // Mostrar "escribiendo..." solo en móvil si el chat está abierto
+        if (window.innerWidth > 768 || state.isChatOpen) {
+            const typingIndicator = document.createElement('div');
+            typingIndicator.className = 'bot-message typing-indicator';
+            typingIndicator.textContent = 'Escribiendo...';
+            elements.chatMessages.appendChild(typingIndicator);
+            scrollToBottom();
+            
+            setTimeout(() => {
+                if (typingIndicator.parentNode) {
+                    elements.chatMessages.removeChild(typingIndicator);
+                }
+                const response = getBotResponse(message);
+                if (response) {
+                    addMessage(response);
+                    
+                    // Mostrar calificación después de ciertas interacciones
+                    if (message.toLowerCase().includes('gracias') || 
+                        message.toLowerCase().includes('help')) {
+                        setTimeout(showRating, 1000);
+                    }
+                }
+            }, 800 + Math.random() * 700);
+        }
     }
     
-    // Función para manejar preguntas rápidas
-    function handleQuickQuestion(question) {
+     // Función para manejar preguntas rápidas (optimizada para móvil)
+     function handleQuickQuestion(e) {
+        const question = e.target.textContent;
         elements.userInput.value = question;
         handleSendMessage();
     }
     
-    // Función para simular reconocimiento de voz
+    // Función para simular reconocimiento de voz (optimizada para móvil)
     function handleVoiceCommand() {
         if (state.isListening) return;
         
@@ -873,17 +927,7 @@ Proceso tarda 5-10 días hábiles`,
             "Quiero solicitar una tarjeta de crédito",
             "¿Cómo aumento el límite de mi tarjeta?",
             "Perdí mi tarjeta, ¿qué debo hacer?",
-            "¿Cuál es la tasa para crédito de vivienda?",
-            "Necesito información sobre CDT",
-            "¿Cómo activo mi tarjeta para viajar?",
-            "Recibí un correo sospechoso del banco",
-            "Quiero presentar una queja formal",
-            "¿Cómo funciona el 4x1000?",
-            "¿Qué cargos aplica el banco?",
-            "¿Cuál es el saldo mínimo requerido?",
-            "¿Puedo usar un cajero automático gratis?",
-            "¿Qué pasa si retiro más dinero del que tengo?",
-            "¿Tienen las transferencias un costo?"
+            "¿Cuál es la tasa para crédito de vivienda?"
         ];
         
         setTimeout(() => {
@@ -895,28 +939,57 @@ Proceso tarda 5-10 días hábiles`,
             
             setTimeout(() => {
                 const response = getBotResponse(randomCommand);
-                addMessage(response);
+                if (response) {
+                    addMessage(response);
+                }
             }, 800);
         }, 2000);
     }
     
-    // Función para minimizar/maximizar el chat
+     // Función para alternar el chat en móviles
+     function toggleChat() {
+        state.isChatOpen = !state.isChatOpen;
+        if (state.isChatOpen) {
+            elements.chatbotWidget.classList.add('active');
+            elements.floatBtn.style.display = 'none';
+            // Enfocar el input cuando se abre
+            setTimeout(() => {
+                elements.userInput.focus();
+                scrollToBottom();
+            }, 300);
+        } else {
+            elements.chatbotWidget.classList.remove('active');
+            elements.floatBtn.style.display = 'flex';
+        }
+    }
+    
+    // Función para minimizar/maximizar el chat en desktop
     function toggleChatSize() {
-        state.isMinimized = !state.isMinimized;
+        if (window.innerWidth <= 768) {
+            toggleChat();
+            return;
+        }
         
+        state.isMinimized = !state.isMinimized;
         if (state.isMinimized) {
             elements.chatbotWidget.classList.add('minimized');
             elements.minimizeBtn.innerHTML = '<i class="fas fa-plus"></i>';
         } else {
             elements.chatbotWidget.classList.remove('minimized');
             elements.minimizeBtn.innerHTML = '<i class="fas fa-minus"></i>';
-            setTimeout(() => {
-                elements.chatMessages.scrollTop = elements.chatMessages.scrollHeight;
-            }, 100);
+            setTimeout(scrollToBottom, 100);
+        }
+    }
+    // Manejar el teclado virtual en móviles
+    function handleMobileKeyboard() {
+        if (window.innerWidth <= 768) {
+            elements.userInput.addEventListener('focus', function() {
+                setTimeout(scrollToBottom, 300);
+            });
         }
     }
     
-    // Inicialización del chatbot
+    // Inicialización del chatbot optimizada para móvil
     function initChatbot() {
         // Mensaje inicial con sugerencias
         setTimeout(() => {
@@ -928,30 +1001,31 @@ Proceso tarda 5-10 días hábiles`,
 - Tarjetas de crédito y débito
 - Préstamos personales e hipotecarios
 - Inversiones (CDT, fondos)
-- Banca digital y seguridad
-- Quejas y reclamos
-- Seguros y productos empresariales
-- Transferencias y pagos
-- Microcréditos y financiación`);
+- Banca digital y seguridad`);
             }, 1000);
         }, 500);
         
-        // Event listeners
+        // Event listeners optimizados para móvil
         elements.sendBtn.addEventListener('click', handleSendMessage);
         elements.userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleSendMessage();
-            }
+            if (e.key === 'Enter') handleSendMessage();
         });
         
-        elements.quickQuestions.forEach(button => {
-            button.addEventListener('click', () => {
-                handleQuickQuestion(button.getAttribute('data-question'));
-            });
+        elements.quickQuestions.forEach(btn => {
+            btn.addEventListener('click', handleQuickQuestion);
         });
         
         elements.micBtn.addEventListener('click', handleVoiceCommand);
         elements.minimizeBtn.addEventListener('click', toggleChatSize);
+        elements.floatBtn.addEventListener('click', toggleChat);
+        
+        // Manejo del teclado en móviles
+        handleMobileKeyboard();
+        
+        // Mostrar botón flotante solo en móviles
+        if (window.innerWidth > 768) {
+            elements.floatBtn.style.display = 'none';
+        }
     }
     
     // Iniciar el chatbot
